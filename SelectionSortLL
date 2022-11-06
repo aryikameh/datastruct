@@ -1,0 +1,80 @@
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+struct node
+{
+    int numbers;
+    struct node *link;
+};
+
+void push(struct node** top, int newnum)
+{
+    int l= sizeof(struct node);
+    struct node* new = (struct node*)malloc(l);
+    new->numbers = newnum;
+    new->link = (*top);
+    (*top) = new;
+}
+
+
+
+void swap (struct node *a,struct node *b)
+{
+    int t=a->numbers;
+    a->numbers=b->numbers;
+    b->numbers=t;
+}
+
+
+void selecsort(struct node *top)
+{
+    struct node *start = top;
+    struct node *end;
+    struct node *min;
+    while(start->link)
+    {
+        min=start;
+        end=start->link;
+        while(end)
+        {
+            if(min->numbers > end->numbers)
+            {
+                min = end;
+            }
+            end = end->link;
+        }
+        swap(start, min);
+    }
+}
+
+void printing(struct node *top)
+{
+    struct node *x = top;
+    while(x!=NULL)
+    {
+        printf("%d", x->numbers);
+        x = x->link;
+    }
+    printf("\n");
+}
+void main()
+{
+    struct node* top = NULL;
+    push(&top, 1);
+    push(&top, 2);
+    push(&top, 3);
+    push(&top, 4);
+    push(&top, 5);
+    push(&top, 6);
+    push(&top, 7);
+    push(&top, 8);
+    push(&top, 9);
+    push(&top, 10);        
+ 
+     printf("\nGiven linked list \n");
+     printing(top);
+     selecsort(top);
+ 
+     printf("\nSorted Linked list \n");
+     printing(top);
+}
