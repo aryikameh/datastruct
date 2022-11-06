@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int numbers;
+    struct node *link; 
+}
+*top;
+
+void createLL(int n)
+{
+    struct node *new, *t;
+    int numbers, i;
+    int l = sizeof(struct node);
+    top = (struct node *)malloc(l);
+    if(top == NULL)
+    {
+        exit(0);
+    }
+    printf("Enter first node: ");
+    scanf("%d", &numbers);
+    top->numbers = numbers;
+    top->link = NULL;
+    t=top;
+    for(i=2; i<=n; i++)
+    {
+        new = (struct node *)malloc(l);
+        if(new == NULL)
+        {
+            break;
+        }
+        printf("Enter node %d: ", i);
+        scanf("%d", &numbers);
+        new->numbers = numbers;
+        new->link = NULL;
+        t->link = new;
+        t = t->link;
+    }
+    struct node* f= top;
+    while (f != NULL)
+    {
+        printf("%d ", f->numbers);
+        f = f->link;
+    }
+}
+void main()
+{
+    int j=0;
+    printf("Enter size of list: ");
+    scanf("%d", &j);
+    createLL(j);
+}
