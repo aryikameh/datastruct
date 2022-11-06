@@ -1,0 +1,42 @@
+void insertion(int a[], int n)
+{
+    int pos, j;
+    for (int i = 1; i < n; i++)
+    {
+        pos = a[i];
+        j = i-1;
+        while (j>= 0 && a[j] > pos)
+        {
+            a[j + 1] = a[j];
+            j=j-1;
+        }
+        a[j+1] = pos;
+    }
+}
+
+void printing(int a[], int n)
+{
+    int i;
+    for (i = 0; i < n; i++)
+        printf("%d ", a[i]);
+    printf("\n");
+}
+
+int main()
+{
+    int l;
+    printf("Enter length of array\n");
+    scanf("%d", &l);
+    int a[l];
+    printf("Enter elements into the array\n");
+    for(int i = 0; i < l; i++)
+    {
+        scanf("%d", &a[i]);
+    }
+    printf("Input array is:\n");
+    printing(a, l);
+    insertion(a, l);
+    printf("Sorted array: \n");
+    printing(a, l);
+    return 0;
+}
