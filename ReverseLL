@@ -1,0 +1,62 @@
+#include <stddef.h>
+#include <stdlib.h>
+struct node
+{
+    int numbers;
+    struct node* link;
+};
+
+void reverse(struct node** top)
+{
+    struct node* last = NULL;
+    struct node* curr = *top;
+    struct node* link = NULL;
+    while (curr != NULL)
+    {
+        link = curr->link;
+        curr->link = last;
+        last = curr;
+        curr = link;
+    }
+    *top= last;
+}
+
+void push(struct node** top, int newnum)
+{
+    int l= sizeof(struct node);
+    struct node* new = (struct node*)malloc(l);
+    new->numbers = newnum;
+    new->link = (*top);
+    (*top) = new;
+}
+
+void printing(struct node* top)
+{
+    struct node* t= top;
+    while (t != NULL)
+    {
+        printf("%d ", t->numbers);
+        t = t->link;
+    }
+}
+
+int main()
+{
+    struct node* top = NULL;
+    push(&top, 1);
+    push(&top, 2);
+    push(&top, 3);
+    push(&top, 4);
+    push(&top, 5);
+    push(&top, 6);
+    push(&top, 7);
+    push(&top, 8);
+    push(&top, 9);
+    push(&top, 10);
+ 
+    printf("Initial Linked list\n");
+    printing(top);
+    reverse(&top);
+    printf("\nReversed Linked List \n");
+    printing(top);
+}
