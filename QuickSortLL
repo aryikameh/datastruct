@@ -1,0 +1,96 @@
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+struct node
+{
+    int numbers;
+    struct node* link;
+};
+ 
+void push(struct node** top, int newnum)
+{
+    int l= sizeof(struct node);
+    struct node* new = (struct node*)malloc(l);
+    new->numbers = newnum;
+    new->link = (*top);
+    (*top) = new;
+}
+
+void printing(struct node* top)
+{
+    while (top != NULL) {
+        printf("%d->", top->numbers);
+        top = top->link;
+    }
+    printf("NULL");
+}
+ 
+struct node* last(struct node* top)
+{
+    struct node* t = top;
+    while (t != NULL && t->link != NULL)
+    {
+        t = t->link;
+    }
+    return t;
+}
+struct node* part(struct node* first, struct node* last)
+{
+    struct node* pos= first;
+    struct node* start = first;
+    int t = 0;
+    while (start!=NULL&&start!=last)
+    {
+        if (start->numbers < last->numbers)
+        {
+            pos= first;
+            t = first->numbers;
+            first->numbers = start->numbers;
+            start->numbers = t;
+            first = first->link;
+        }
+        start = start->link;
+    }
+    t = first->numbers;
+    first->numbers = last->numbers;
+    last->numbers = t;
+    return pos;
+}
+void quicksort(struct node* first, struct node* last)
+{
+    if (first==last)
+    {
+        return;
+    }
+    struct node* pos=part(first, last);
+ 
+    if (pos!=NULL && pos->link!=NULL)
+    {
+        quicksort(pos->link, last);
+    }
+ 
+    if (pos!=NULL&&first!=pos)
+    {
+        quicksort(first, pos);
+    }
+}
+
+void main()
+{
+    struct node* top = NULL;
+    push(&top, 1);
+    push(&top, 7);
+    push(&top, 5);
+    push(&top, 6);
+    push(&top, 4);
+    push(&top, 3);
+    push(&top, 2);
+    push(&top, 10);
+    push(&top, 8);
+    push(&top, 9);
+    printf("Initial Linked List:\n");
+    printing(top);
+    quicksort(top, last(top));
+    printf("\nSorted Linked List:\n");
+    printing(top);
+}
