@@ -1,0 +1,191 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+  int key;
+  struct Node *left;
+  struct Node *right;
+};
+
+struct Node *newNode(int key) {
+  struct Node *node = (struct Node*)malloc(sizeof(struct Node));
+  node->key = key;
+  node->left = NULL;
+  node->right = NULL;
+  return node;
+}
+
+struct Node *insert(struct Node *node, int key) {
+  if (node == NULL) return newNode(key);
+
+  if (key < node->key) {
+    node->left = insert(node->left, key);
+  } else if (key > node->key) {
+    node->right = insert(node->right, key);
+  }
+
+  return node;
+}
+
+struct Node *search(struct Node *node, int key) {
+  if (node == NULL || node->key == key) {
+    return node;
+  }
+
+  if (key < node->key) {
+    return search(node->left, key);
+  } else {
+    return search(node->right, key);
+  }
+}
+
+int questions(char quest[], int k, int answ[])
+{
+  printf("%d\n", quest[k]);
+  int a = answ[k];
+  return a;
+}
+
+int printingq()
+{
+  printf("Enter 1 if you want the question and 0 if you want to answer\n");
+  int choice;
+  scanf("%d\n", &choice);
+  if (choice==1)
+  {
+    printf("The question is-");
+  }
+  else
+  {
+    printf("Your guess is-?");
+    scanf("%d\n", *choice);
+  }
+  return choice;
+}
+int getarray(int a[])
+{
+    int f[15];
+    for (int i =0; i++; i<15)
+    {
+      f[i]=a[i];
+    }
+    return f;
+}
+int main() {
+    char a[] = {"India", "France", "Germany", "Singapore", "USA", "Nepal", "China", "Sri Lanka", "England", "Argentina", "Italy", "Russia", "South Africa", "Bangladesh", "Japan"};
+    char ques[]= {"Is it a European Country", "Is it an Asian Country", "Is it a tricolor", "Does it have stripes", "Does it have Blue", "Does it have stars", "Does it have circle", "Does it have Red", "Does it have vertical stripes", "Is it rectangular", "Does it have an object", "Does it have green", "Does it have a cross", "Does it have orange", "Does it have a triangle"};
+    int q1[]= {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
+    int q2[]= {1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1};
+    int q3[]= {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0};
+    int q4[]= {1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0};
+    int q5[]= {0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0};
+    int q6[]= {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+    int q7[]= {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1};
+    int q8[]= {0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1};
+    int q9[]= {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0};
+    int q10[]= {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int q11[]= {1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0};
+    int q12[]= {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0};
+    int q13[]= {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0};
+    int q14[]= {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int q15[]= {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0};
+    int ans[15];
+    int randomnum= rand() % 15;
+    if (randomnum==1)
+    {
+      ans[]=getarray(q1);
+    }
+    else if (randomnum==2)
+    {
+      ans[]=getarray(q2);
+    }
+    else if (randomnum==3)
+    {
+      ans[]=getarray(q3);
+    }
+    else if (randomnum==4)
+    {
+      ans[]=getarray(q4);
+    }
+    else if (randomnum==5)
+    {
+      ans[]=getarray(q5);
+    }
+    else if (randomnum==6)
+    {
+      ans[]=getarray(q6);
+    }
+    else if (randomnum==7)
+    {
+      ans[]=getarray(q7);
+    }
+    else if (randomnum==8)
+    {
+      ans[]=getarray(q9);
+    }
+    else if (randomnum==10)
+    {
+      ans[]=getarray(q10);
+    }
+    else if (randomnum==11)
+    {
+      ans[]=getarray(q11);
+    }
+    else if (randomnum==12)
+    {
+      ans[]=getarray(q12);
+    }
+    else if (randomnum==13)
+    {
+      ans[]=getarray(q13);
+    }
+    else if (randomnum==14)
+    {
+      ans[]=getarray(q14);
+    }
+    else if (randomnum==15)
+    {
+      ans[]=getarray(q15);
+    }
+    struct Node *root = NULL;
+    root = insert(root, 0);
+    for (int i = 1; i<15; i++)
+    {
+      insert (root, i);
+    }
+    int c=0;
+    printf("Let's start\n");
+    for (int j = 0;j<4;j++)
+    {
+      int m=printingq();
+      if(m==1)
+      {
+      int l = questions(ques[], c, ans[], randomnum);
+      if (l==1)
+      {
+        printf("Yes");
+        struct Node *root = root->left;
+      }
+      else
+      {
+        printf("No");
+        struct Node *root = root->right;
+      }
+      c = *root;
+    }
+    else
+    {
+      if(choice==randomnum)
+      {
+        printf("You got it!");
+      }
+      else
+      {
+        printf("No, the answer was- ");
+        printf(a[randomnum]);
+      }
+      break;
+    }
+    }
+  return 0;
+}

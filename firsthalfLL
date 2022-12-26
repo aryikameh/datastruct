@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+  int data;
+  struct Node* next;
+};
+
+void push(struct Node** top, int newnum)
+{
+    int l= sizeof(struct Node);
+    struct Node* new = (struct Node*)malloc(l);
+    new->data = newnum;
+    new->next = (*top);
+    (*top) = new;
+}
+
+void print_first_half(struct Node* head) {
+  //Taking a slow and fast pointer
+  struct Node* slow = head;
+  struct Node* fast = head;
+
+  //Increment the fast pointer by two nodes and the slow pointer by one node until the fast pointer reaches the end of the list
+  while (fast != NULL && fast->next != NULL) {
+    slow = slow->next;
+    fast = fast->next->next;
+  }
+  while (head != slow) {
+    printf("%d ", head->data);
+    head = head->next;
+  }
+}
+
+int main(void) {
+  struct Node* head = malloc(sizeof(struct Node));
+  push(&head, 1);
+  push(&head, 5);
+  push(&head, 3);
+  push(&head, 2);
+  push(&head, 6);
+  push(&head, 7);
+  push(&head, 4);
+  push(&head, 10);
+  push(&head, 8);
+  push(&head, 9);
+
+  //Printing the first half of the linked list
+  print_first_half(head);
+  return 0;
+}

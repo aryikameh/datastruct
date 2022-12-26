@@ -1,0 +1,170 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h>
+
+// Max number of levels for a skip list node
+#define MAX_LEVEL 9
+
+// Probability of creating an additional level for a skip list node
+#define PROBABILITY 0.5
+
+// Skip list node
+typedef struct Node {
+  int key;
+  int value;
+  struct Node **next;
+} Node;
+
+// Skip list
+typedef struct SkipList {
+  int level;
+  struct Node *head;
+} SkipList;
+
+// Creates a new skip list node with the given key and value
+// and a random number of levels (up to MAX_LEVEL)
+Node *create_node(int key, int value) {
+  Node *node = malloc(sizeof(Node));
+  node->key = key;
+  node->value = value;
+  node->next = malloc((MAX_LEVEL + 1) * sizeof(Node*));
+  for (int i = 0; i <= MAX_LEVEL; i++) {
+    node->next[i] = NULL;
+  }
+  return node;
+}
+
+// Creates a new skip list
+SkipList *create_skip_list() {
+  SkipList *list = malloc(sizeof(SkipList));
+  list->level = 0;
+  list->head = create_node(0, 0);
+  return list;
+}
+
+// Generates a random level for a new skip list node
+// based on the PROBABILITY constant
+int random_level() {
+  int level = 0;
+  while (rand() < PROBABILITY * RAND_MAX && level < MAX_LEVEL) {
+    level++;
+  }
+  return level;
+}
+
+// Inserts a new key-value pair into the skip list
+void insert(SkipList *list, int key, int value) {
+  Node *update[MAX_LEVEL + 1];
+  Node *node = list->head;
+
+  // Find the position to insert the new node
+  for (int i = list->level; i >= 0; i--) {
+    while (node->next[i] != NULL && node->next[i]->key < key) {
+      node = node->next[i];
+    }
+    update[i] = node;
+  }
+  node = node->next[0];
+
+  // If the key already exists, update the value
+  if (node != NULL && node->key == key) {
+    node->value = value;
+    return;
+  }
+
+  // Generate a random level for the new node
+  int level = random_level();
+
+  // If the new node has a higher level than the current highest level,
+  // update the head node
+  if (level > list->level) {
+    for (int i = list->level + 1; i <= level; i++) {
+      update[i] = list->head;
+      }
+    list->level = level;
+    }
+
+    // Create the new node and update the skip list
+    node = create_node(key, value);
+    for (int i = 0; i <= level; i++) {
+        node->next[i] = update[i]->next[i];
+        update[i]->next[i] = node;
+    }
+}
+
+// Searches for a key in the skip list and returns the corresponding value
+int search(SkipList *list, int key) {
+    Node *node = list->head;
+    for (int i = list->level; i >= 0; i--) {
+        while (node->next[i] != NULL && node->next[i]->key < key) {
+            node = node->next[i];
+        }
+    }
+    node = node->next[0];
+    if (node != NULL && node->key == key) {
+        return node->value;
+    }
+    return 0;
+}
+
+// Removes a key from the skip list
+void remove_key(SkipList *list, int key) {
+    Node *update[MAX_LEVEL + 1];
+    Node *node = list->head;
+
+    // Find the position of the key to be removed
+    for (int i = list->level; i >= 0; i--) {
+        while (node->next[i] != NULL && node->next[i]->key < key) {
+            node = node->next[i];
+        }
+        update[i] = node;
+    }
+    node = node->next[0];
+
+    // If the key is not found, do nothing
+    if (node == NULL || node->key != key) {
+        return;
+    }
+
+    // Remove the key by updating the skip list
+    for (int i = 0; i <= list->level; i++) {
+        if (update[i]->next[i] != node) {
+        break;
+        }
+    update[i]->next[i] = node->next[i];
+    }
+    free(node);
+
+    // Decrease the level of the skip list if necessary
+    while (list->level > 0 && list->head->next[list->level] == NULL) {
+        list->level--;
+    }
+}
+
+int main() {
+    srand(time(NULL)); // Seed the random number generator
+
+    SkipList *list = create_skip_list();
+
+    // Insert some key-value pairs into the skip list
+    insert(list, 1, 10);
+    insert(list, 2, 20);
+    insert(list, 3, 30);
+    insert(list, 4, 40);
+    insert(list, 5, 50);
+    insert(list, 6, 60);
+    insert(list, 7, 70);
+    insert(list, 8, 80);
+
+    // Search for a key in the skip list
+    printf("Value for key 7: %d\n", search(list, 7));
+
+    // Remove a key from the skip list
+    remove_key(list, 7);
+
+    // Search for the removed key
+    printf("Value for removed key 7: %d\n", search(list, 7));
+
+    return 0;
+} 
